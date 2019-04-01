@@ -52,6 +52,7 @@ module.exports = async () => {
   await getMentions();
 
   const reportOutput = [];
+  let grandTotal = 0;
   const { timeStart, timeEnd } = getDate();
   const entries = await timeular.api(`time-entries/${timeStart}/${timeEnd}`);
 
@@ -65,9 +66,11 @@ module.exports = async () => {
         }
 
         reportOutput[mentionDetails.label] += parseFloat(timeSpent.toFixed(2));
+        grandTotal += parseFloat(timeSpent.toFixed(2));
       });
     });
   }
 
   console.table(reportOutput);
+  console.log("Total Hours: ", grandTotal);
 };

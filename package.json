@@ -1,7 +1,7 @@
 {
   "name": "timeular-cli",
   "author": "Chris Lagasse <chris@happycog.com>",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "",
   "license": "ISC",
   "scripts": {
@@ -13,9 +13,7 @@
   "dependencies": {
     "commander": "^2.19.0",
     "global": "^4.3.2",
-    "moment": "^2.24.0",
-    "timeular": "file:./src/timeular",
-    "timeular-cli": "./"
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "eslint": "^5.15.3",

@@ -1,20 +1,24 @@
 {
   "name": "timeular-cli",
+  "author": "Chris Lagasse <chris@happycog.com>",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "timeular": "./bin/index.js"
+  },
   "dependencies": {
     "commander": "^2.19.0",
+    "global": "^4.3.2",
     "moment": "^2.24.0",
-    "timeular": "file:./src/timeular"
+    "timeular": "file:./src/timeular",
+    "timeular-cli": "./"
   },
   "devDependencies": {
     "eslint": "^5.15.3",
     "prettier": "1.16.4"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Chris Lagasse <chris@happycog.com>",
-  "license": "ISC"
+  }
 }

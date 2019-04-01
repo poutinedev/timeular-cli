@@ -1,6 +1,6 @@
 const program = require("commander");
-const getTaskTotal = require("./src/commands/get-task-time");
-const getReport = require("./src/commands/get-report");
+const getTaskTotal = require("../src/commands/get-task-time");
+const getReport = require("../src/commands/get-report");
 
 program.version("0.1.0", "-v, --version");
 

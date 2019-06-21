@@ -16,6 +16,6 @@ program
 program
   .command("*")
   .description("Get total time spent for Timeular mention (Jira Issue)")
-  .action(getTaskTotal);
+  .action(getReport);
 
 program.parse(process.argv);

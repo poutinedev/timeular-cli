@@ -1,17 +1,32 @@
 const moment = require("moment");
 const timeular = require("../timeular"); // @TODO change this to just 'timeular'
 
-let mentions = [];
+let mentions = null;
 
 const getDate = () => {
-  const timeStart = moment().format("YYYY-MM-DDT00:00:00.000");
-  const timeEnd = moment().format("YYYY-MM-DDT23:59:59.999");
+  const utcOffset = moment().utcOffset(); // Gets your system's timezone.
+
+  // Gets UTC times, adjusted by the offset.
+  const timeStart = moment()
+    .hours(0)
+    .minutes(0)
+    .seconds(0)
+    .milliseconds(0)
+    .utc()
+    .utcOffset(utcOffset, true);
+  const timeEnd = moment()
+    .hours(23)
+    .minutes(59)
+    .seconds(59)
+    .milliseconds(999)
+    .utc()
+    .utcOffset(utcOffset, true);
 
   return { timeStart, timeEnd };
 };
 
 const getMentions = async () => {
-  if (mentions) {
+  if (!mentions) {
     const tagsAndMentions = await timeular.api("tags-and-mentions");
 
     if (tagsAndMentions) {
@@ -54,19 +69,23 @@ module.exports = async () => {
   const reportOutput = [];
   let grandTotal = 0;
   const { timeStart, timeEnd } = getDate();
-  const entries = await timeular.api(`time-entries/${timeStart}/${timeEnd}`);
+  const entries = await timeular.api(
+    `time-entries/${timeStart.format(
+      "YYYY-MM-DDTHH:mm:ss.SSS"
+    )}/${timeEnd.format("YYYY-MM-DDTHH:mm:ss.SSS")}`
+  );
 
   if (entries) {
     entries.timeEntries.forEach(entry => {
-      const timeSpent = getDurationInHours(entry.duration);
+      const timeSpent = getDurationInHours(entry.duration).toFixed(2);
       entry.note.mentions.forEach(mention => {
         let mentionDetails = getMentionDetails(mention.key);
         if (!reportOutput[mentionDetails.label]) {
           reportOutput[mentionDetails.label] = 0;
         }
 
-        reportOutput[mentionDetails.label] += parseFloat(timeSpent.toFixed(2));
-        grandTotal += parseFloat(timeSpent.toFixed(2));
+        reportOutput[mentionDetails.label] += parseFloat(timeSpent);
+        grandTotal += parseFloat(timeSpent);
       });
     });
   }

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const program = require("commander");
-const getTaskTotal = require("../src/commands/get-task-time");
 const getReport = require("../src/commands/get-report");
 
 program.version("0.1.1", "-v, --version");

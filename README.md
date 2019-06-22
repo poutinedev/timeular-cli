@@ -1,10 +1,12 @@
 # Timeular CLI
 
-At [Happy Cog](https://happycog.com), we use Jira, but unfortunately a version that is not compatible with the integration that [Timeular](https://timeular.com) offers. So, those of us who use Timeular needed a quick way to generate a report of how much time we spent on each task (flagged with Mentions, per Timeular's Jira integration standard), so we can more quickly add the time to our timesheets at the end of the day.
+At my current workplace we use Jira, but unfortunately it's a version that is not compatible with the integration that [Timeular](https://timeular.com) offers. So, those of us who use Timeular needed a way to generate a report of how much time we spent on each task (flagged with Mentions, per Timeular's Jira integration standard). I built this so we can add the time to our timesheets at the end of the day more quickly.
+
+**This is a personal project, and updates to this will primarily be sporadic and as I need it. Pull Requests welcome.**
 
 ## Requirements
 
-You have to have a Timeular account, using the Timeular app. Their device is optional (but badass)
+You have to have a Timeular account, using the Timeular app. The physical device is optional (but badass)
 
 ## Installation
 
@@ -66,4 +68,4 @@ Total Hours:  2.3099999999999999
 
 ## Contributors
 
-Chris Lagasse <soben@outlook.com>, developer at Happy Cog
+Chris Lagasse <soben@outlook.com>

@@ -66,4 +66,4 @@ Total Hours:  2.3099999999999999
 
 ## Contributors
 
-Chris Lagasse <chrislagasse@protonmail.com>, developer at Happy Cog
+Chris Lagasse <soben@outlook.com>, developer at Happy Cog

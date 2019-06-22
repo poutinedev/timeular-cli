@@ -1,9 +1,19 @@
 {
-  "name": "timeular-cli",
-  "author": "Chris Lagasse <chris@happycog.com>",
+  "name": "@poutine/timeular-cli",
+  "author": "Chris Lagasse <soben@outlook.com>",
   "version": "0.1.1",
-  "description": "",
+  "description": "Manage your Timeular reporting and time tracking",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Soben/timeular-cli.git"
+  },
   "license": "ISC",
+  "keywords": [
+    "timeular",
+    "time tracking",
+    "reports",
+    "happy cog"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +23,8 @@
   "dependencies": {
     "commander": "^2.19.0",
     "global": "^4.3.2",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "eslint": "^5.15.3",

@@ -1,8 +1,10 @@
 # Timeular CLI
 
+At [Happy Cog](https://happycog.com), we use Jira, but unfortunately a version that is not compatible with the integration that [Timeular](https://timeular.com) offers. So, those of us who use Timeular needed a quick way to generate a report of how much time we spent on each task (flagged with Mentions, per Timeular's Jira integration standard), so we can more quickly add the time to our timesheets at the end of the day.
+
 ## Requirements
 
-You have to have a [Timeular](https://timeular.com) account, using the Timeular app. Their device is optional (but badass)
+You have to have a Timeular account, using the Timeular app. Their device is optional (but badass)
 
 ## Installation
 
@@ -18,13 +20,13 @@ You can get the values for these fields by visiting your [Account page](https://
 ### via NPM
 
 ```
-$ npm install -g timeular-cli
+$ npm install -g @poutine/timeular-cli
 ```
 
 ### via Yarn
 
 ```
-$ yarn global add timeular-cli
+$ yarn global add @poutine/timeular-cli
 ```
 
 ## How to Use
@@ -59,6 +61,7 @@ Total Hours:  2.3099999999999999
 - Set up the reporting so you can specify a date range rather than only be "today"
 - Get specific Activity or Mentions
 - Move console.log into its own library, with colors and fancy displays depending on status
+- Start and stop timers
 - Everything that the API currently does(?)
 
 ## Contributors

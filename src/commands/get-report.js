@@ -6,6 +6,8 @@ let mentions = null;
 const getDate = () => {
   const utcOffset = moment().utcOffset(); // Gets your system's timezone.
 
+  // @todo get Range data from user.
+
   // Gets UTC times, adjusted by the offset.
   const timeStart = moment()
     .hours(0)
@@ -23,6 +25,11 @@ const getDate = () => {
     .utcOffset(utcOffset, true);
 
   return { timeStart, timeEnd };
+};
+
+const getDateRangeForDisplay = start => {
+  // @todo support date ranges larger than one day
+  return start.format("MMMM Do, YYYY");
 };
 
 const getMentions = async () => {
@@ -60,7 +67,7 @@ const getDurationInHours = duration => {
     "seconds"
   );
 
-  return durationInSeconds.asHours();
+  return parseFloat(durationInSeconds.asHours());
 };
 
 module.exports = async () => {
@@ -68,28 +75,59 @@ module.exports = async () => {
 
   const reportOutput = [];
   let grandTotal = 0;
+  let billableTotal = 0;
+  let nonBillableTotal = 0;
+
+  // Gets the date range based on settings and user input
   const { timeStart, timeEnd } = getDate();
+
+  // Get all of the time entries that fit this range.
   const entries = await timeular.api(
     `time-entries/${timeStart.format(
       "YYYY-MM-DDTHH:mm:ss.SSS"
     )}/${timeEnd.format("YYYY-MM-DDTHH:mm:ss.SSS")}`
   );
 
+  // For all entries, let's get the mentions, and track the time spent for each, billable and non-billable
   if (entries) {
     entries.timeEntries.forEach(entry => {
-      const timeSpent = getDurationInHours(entry.duration).toFixed(2);
+      let mentionsTracked = false;
+      const timeSpent = getDurationInHours(entry.duration);
       entry.note.mentions.forEach(mention => {
         let mentionDetails = getMentionDetails(mention.key);
         if (!reportOutput[mentionDetails.label]) {
           reportOutput[mentionDetails.label] = 0;
         }
 
-        reportOutput[mentionDetails.label] += parseFloat(timeSpent);
-        grandTotal += parseFloat(timeSpent);
+        mentionsTracked = true;
+        reportOutput[mentionDetails.label] += timeSpent;
+        billableTotal += timeSpent;
       });
+
+      // No mentions, let's track this as "non-billable"
+      if (!mentionsTracked) {
+        nonBillableTotal += timeSpent;
+      }
     });
   }
 
-  console.table(reportOutput);
-  console.log("Total Hours: ", grandTotal);
+  // Format everything for display.
+  const parsedReportOutput = [];
+  for (const mention of Object.keys(reportOutput)) {
+    // parseFloat here is just for visual purposes, so the console.table doesn't wrap it in a string.
+    parsedReportOutput[mention] = parseFloat(reportOutput[mention].toFixed(2));
+  }
+  // @todo sort by key?
+
+  // @todo add 'Other' time to table instead of it's own 'total' entry?
+
+  // Calculate the grand total.
+  grandTotal += billableTotal + nonBillableTotal;
+
+  // Output all of the information
+  console.log("Report for", getDateRangeForDisplay(timeStart, timeEnd));
+  console.table(parsedReportOutput);
+  console.log("Non-Billable : ", nonBillableTotal.toFixed(2));
+  console.log("Billable     : ", billableTotal.toFixed(2));
+  console.log("Total Hours  : ", grandTotal.toFixed(2));
 };

@@ -3,15 +3,11 @@ const timeular = require("../timeular"); // @TODO change this to just 'timeular'
 
 let mentions = null;
 
-const getDate = (requestedStartDate = null, requestedEndDate = null) => {
+const getDate = (requestedStartDate = null) => {
   const utcOffset = moment().utcOffset(); // Gets your system's timezone.
 
   if (!requestedStartDate) {
     requestedStartDate = moment().format("YYYY-MM-DD");
-  }
-
-  if (!requestedEndDate) {
-    requestedEndDate = requestedStartDate;
   }
 
   // Gets UTC times, adjusted by the offset.
@@ -22,7 +18,7 @@ const getDate = (requestedStartDate = null, requestedEndDate = null) => {
     .milliseconds(0)
     .utc()
     .utcOffset(utcOffset, true);
-  const timeEnd = moment(requestedEndDate)
+  const timeEnd = moment(requestedStartDate)
     .hours(23)
     .minutes(59)
     .seconds(59)

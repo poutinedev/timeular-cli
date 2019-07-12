@@ -6,8 +6,9 @@ let mentions = null;
 const getDate = (requestedStartDate = null) => {
   const utcOffset = moment().utcOffset(); // Gets your system's timezone.
 
+  // @todo try/catch this all
   if (!requestedStartDate) {
-    requestedStartDate = moment().format("YYYY-MM-DD");
+    requestedStartDate = moment();
   }
 
   // Gets UTC times, adjusted by the offset.

@@ -19,16 +19,30 @@ export TIMEULAR_API_SECRET="YYYYYYYYYY"
 
 You can get the values for these fields by visiting your [Account page](https://profile.timeular.com/#/app/account) on Timeular
 
-### via NPM
+#### via NPM
 
 ```
 $ npm install -g @poutine/timeular-cli
 ```
 
-### via Yarn
+#### via Yarn
 
 ```
 $ yarn global add @poutine/timeular-cli
+```
+
+## Updating
+
+#### via NPM
+
+```
+$ npm update -g @poutine/timeular-cli
+```
+
+#### via Yarn
+
+```
+$ yarn global upgrade @poutine/timeular-cli@latest
 ```
 
 ## How to Use
@@ -46,16 +60,19 @@ This will not show any time entries that have not been flagged by an `@` mention
 Example output:
 
 ```
-┌───────────┬────────────────────┐
-│  (index)  │       Values       │
-├───────────┼────────────────────┤
-│  AAA-166  │        0.07        │
-│  AAA-196  │ 0.6799999999999999 │
-│   BBB-1   │        0.11        │
-│ INTERNAL  │        0.15        │
-│ INTERNAL  │ 1.2999999999999998 │
-└───────────┴────────────────────┘
-Total Hours:  2.3099999999999999
+Report for July 12th, 2019
+┌───────────┬──────────┐
+│  (index)  │  Values  │
+├───────────┼──────────┤
+│  AAA-166  │   0.07   │
+│  AAA-196  │   0.68   │
+│   BBB-1   │   0.11   │
+│ INTERNAL  │   0.15   │
+│ INTERNAL  │   1.30   │
+└───────────┴──────────┘
+Non-Billable :  0.35
+Billable     :  2.31
+Total Hours  :  2.66
 ```
 
 ## Road Map

@@ -57,7 +57,7 @@ $ timeular report [startDate]
 
 `[startDate]` needs to be in a YYYY-MM-DD format.
 
-This will not show any time entries that have not been flagged by an `@` mention. For my purposes, this is useful, because I only need to clock time that I have flagged to Jira issues.
+This will not show any time entries that have not been flagged by an `@` mention. For my purposes, this is useful, because I only need to clock time that I have flagged to Jira issues. It will bunch all non-mentioned time into "non-billable"
 
 Example output:
 

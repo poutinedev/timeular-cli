@@ -40,13 +40,9 @@ const getDate = (requestedStartDate = null) => {
   return { timeStart: utcStartTime, timeEnd: utcEndTime };
 };
 
-const getDateRangeForDisplay = (start, end) => {
+const getDateRangeForDisplay = start => {
   // @todo support date ranges larger than one day
   let string = start.format("MMMM Do, YYYY");
-
-  if (start.format("YYYY-MM-DD") != end.format("YYYY-MM-DD")) {
-    string += " - " + end.format("MMMM Do, YYYY");
-  }
 
   return string;
 };

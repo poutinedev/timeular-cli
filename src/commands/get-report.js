@@ -3,20 +3,26 @@ const timeular = require("../timeular"); // @TODO change this to just 'timeular'
 
 let mentions = null;
 
-const getDate = () => {
+const getDate = (requestedStartDate = null, requestedEndDate = null) => {
   const utcOffset = moment().utcOffset(); // Gets your system's timezone.
 
-  // @todo get Range data from user.
+  if (!requestedStartDate) {
+    requestedStartDate = moment().format("YYYY-MM-DD");
+  }
+
+  if (!requestedEndDate) {
+    requestedEndDate = requestedStartDate;
+  }
 
   // Gets UTC times, adjusted by the offset.
-  const timeStart = moment()
+  const timeStart = moment(requestedStartDate)
     .hours(0)
     .minutes(0)
     .seconds(0)
     .milliseconds(0)
     .utc()
     .utcOffset(utcOffset, true);
-  const timeEnd = moment()
+  const timeEnd = moment(requestedEndDate)
     .hours(23)
     .minutes(59)
     .seconds(59)
@@ -70,7 +76,7 @@ const getDurationInHours = duration => {
   return parseFloat(durationInSeconds.asHours());
 };
 
-module.exports = async () => {
+module.exports = async startDate => {
   await getMentions();
 
   const reportOutput = [];
@@ -79,7 +85,7 @@ module.exports = async () => {
   let nonBillableTotal = 0;
 
   // Gets the date range based on settings and user input
-  const { timeStart, timeEnd } = getDate();
+  const { timeStart, timeEnd } = getDate(startDate);
 
   // Get all of the time entries that fit this range.
   const entries = await timeular.api(

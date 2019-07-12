@@ -1,25 +1,35 @@
 const moment = require("moment");
 const timeular = require("../timeular"); // @TODO change this to just 'timeular'
 
+const dateRegex = new RegExp("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+
 let mentions = null;
 
 const getDate = (requestedStartDate = null) => {
-  const utcOffset = moment().utcOffset(); // Gets your system's timezone.
+  const defaultDate = moment();
+  const utcOffset = defaultDate.utcOffset(); // Gets your system's timezone.
 
-  // @todo try/catch this all
-  if (!requestedStartDate) {
-    requestedStartDate = moment();
+  let startDate = defaultDate;
+  let endDate = defaultDate;
+  if (requestedStartDate) {
+    if (dateRegex.test(requestedStartDate) === false) {
+      throw "Start Date must be YYYY-MM-DD format";
+    }
+    startDate = moment(requestedStartDate);
+    endDate = startDate;
   }
 
+  // @TODO add requestedEndDate back into the picture and allow it to work as well.
+
   // Gets UTC times, adjusted by the offset.
-  const timeStart = moment(requestedStartDate)
+  const utcStartTime = moment(startDate)
     .hours(0)
     .minutes(0)
     .seconds(0)
     .milliseconds(0)
     .utc()
     .utcOffset(utcOffset, true);
-  const timeEnd = moment(requestedStartDate)
+  const utcEndTime = moment(endDate)
     .hours(23)
     .minutes(59)
     .seconds(59)
@@ -27,12 +37,18 @@ const getDate = (requestedStartDate = null) => {
     .utc()
     .utcOffset(utcOffset, true);
 
-  return { timeStart, timeEnd };
+  return { timeStart: utcStartTime, timeEnd: utcEndTime };
 };
 
-const getDateRangeForDisplay = start => {
+const getDateRangeForDisplay = (start, end) => {
   // @todo support date ranges larger than one day
-  return start.format("MMMM Do, YYYY");
+  let string = start.format("MMMM Do, YYYY");
+
+  if (start.format("YYYY-MM-DD") != end.format("YYYY-MM-DD")) {
+    string += " - " + end.format("MMMM Do, YYYY");
+  }
+
+  return string;
 };
 
 const getMentions = async () => {
@@ -74,63 +90,70 @@ const getDurationInHours = duration => {
 };
 
 module.exports = async startDate => {
-  await getMentions();
+  try {
+    // Gets the date range based on settings and user input
+    const { timeStart, timeEnd } = getDate(startDate);
 
-  const reportOutput = [];
-  let grandTotal = 0;
-  let billableTotal = 0;
-  let nonBillableTotal = 0;
+    const reportOutput = [];
+    let grandTotal = 0;
+    let billableTotal = 0;
+    let nonBillableTotal = 0;
 
-  // Gets the date range based on settings and user input
-  const { timeStart, timeEnd } = getDate(startDate);
+    // Get all 'mentions' available.
+    await getMentions();
 
-  // Get all of the time entries that fit this range.
-  const entries = await timeular.api(
-    `time-entries/${timeStart.format(
-      "YYYY-MM-DDTHH:mm:ss.SSS"
-    )}/${timeEnd.format("YYYY-MM-DDTHH:mm:ss.SSS")}`
-  );
+    // Get all of the time entries that fit this range.
+    const entries = await timeular.api(
+      `time-entries/${timeStart.format(
+        "YYYY-MM-DDTHH:mm:ss.SSS"
+      )}/${timeEnd.format("YYYY-MM-DDTHH:mm:ss.SSS")}`
+    );
 
-  // For all entries, let's get the mentions, and track the time spent for each, billable and non-billable
-  if (entries) {
-    entries.timeEntries.forEach(entry => {
-      let mentionsTracked = false;
-      const timeSpent = getDurationInHours(entry.duration);
-      entry.note.mentions.forEach(mention => {
-        let mentionDetails = getMentionDetails(mention.key);
-        if (!reportOutput[mentionDetails.label]) {
-          reportOutput[mentionDetails.label] = 0;
+    // For all entries, let's get the mentions, and track the time spent for each, billable and non-billable
+    if (entries) {
+      entries.timeEntries.forEach(entry => {
+        let mentionsTracked = false;
+        const timeSpent = getDurationInHours(entry.duration);
+        entry.note.mentions.forEach(mention => {
+          let mentionDetails = getMentionDetails(mention.key);
+          if (!reportOutput[mentionDetails.label]) {
+            reportOutput[mentionDetails.label] = 0;
+          }
+
+          mentionsTracked = true;
+          reportOutput[mentionDetails.label] += timeSpent;
+          billableTotal += timeSpent;
+        });
+
+        // No mentions, let's track this as "non-billable"
+        if (!mentionsTracked) {
+          nonBillableTotal += timeSpent;
         }
-
-        mentionsTracked = true;
-        reportOutput[mentionDetails.label] += timeSpent;
-        billableTotal += timeSpent;
       });
+    }
 
-      // No mentions, let's track this as "non-billable"
-      if (!mentionsTracked) {
-        nonBillableTotal += timeSpent;
-      }
-    });
+    // Format everything for display.
+    const parsedReportOutput = [];
+    for (const mention of Object.keys(reportOutput)) {
+      // parseFloat here is just for visual purposes, so the console.table doesn't wrap it in a string.
+      parsedReportOutput[mention] = parseFloat(
+        reportOutput[mention].toFixed(2)
+      );
+    }
+    // @todo sort by key?
+
+    // @todo add 'Other' time to table instead of it's own 'total' entry?
+
+    // Calculate the grand total.
+    grandTotal += billableTotal + nonBillableTotal;
+
+    // Output all of the information
+    console.log("Report for", getDateRangeForDisplay(timeStart, timeEnd));
+    console.table(parsedReportOutput);
+    console.log("Non-Billable : ", nonBillableTotal.toFixed(2));
+    console.log("Billable     : ", billableTotal.toFixed(2));
+    console.log("Total Hours  : ", grandTotal.toFixed(2));
+  } catch (error) {
+    console.log(error);
   }
-
-  // Format everything for display.
-  const parsedReportOutput = [];
-  for (const mention of Object.keys(reportOutput)) {
-    // parseFloat here is just for visual purposes, so the console.table doesn't wrap it in a string.
-    parsedReportOutput[mention] = parseFloat(reportOutput[mention].toFixed(2));
-  }
-  // @todo sort by key?
-
-  // @todo add 'Other' time to table instead of it's own 'total' entry?
-
-  // Calculate the grand total.
-  grandTotal += billableTotal + nonBillableTotal;
-
-  // Output all of the information
-  console.log("Report for", getDateRangeForDisplay(timeStart, timeEnd));
-  console.table(parsedReportOutput);
-  console.log("Non-Billable : ", nonBillableTotal.toFixed(2));
-  console.log("Billable     : ", billableTotal.toFixed(2));
-  console.log("Total Hours  : ", grandTotal.toFixed(2));
 };

@@ -9,6 +9,8 @@ module.exports = async (timeStart, timeEnd) => {
   )}/${timeEnd.format("YYYY-MM-DDTHH:mm:ss.SSS")}`);
 
   if (entries) {
+    await getMentions.prep();
+    
     return entries.timeEntries.map(entry => {
       entry.hoursSpent = date.getDuration(entry.duration);
       entry.note.mentions = entry.note.mentions.map(mention => {

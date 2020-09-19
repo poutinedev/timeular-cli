@@ -1,5 +1,4 @@
 const date = require("../data/get-date");
-const getMentions = require("../data/get-timeular-mentions");
 const getEntries = require("../data/get-timeular-entries");
 
 const getDateRangeForDisplay = start => {
@@ -18,9 +17,6 @@ module.exports = async startDate => {
     let grandTotal = 0;
     let billableTotal = 0;
     let nonBillableTotal = 0;
-
-    // Get all 'mentions' available.
-    await getMentions.prep();
 
     // Get all of the time entries that fit this range.
     const entries = await getEntries( timeStart, timeEnd );

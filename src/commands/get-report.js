@@ -27,23 +27,21 @@ module.exports = async startDate => {
 
     // For all entries, let's get the mentions, and track the time spent for each, billable and non-billable
     if (entries) {
-      entries.timeEntries.forEach(entry => {
+      entries.forEach(entry => {
         let mentionsTracked = false;
-        const timeSpent = date.getDuration(entry.duration);
         entry.note.mentions.forEach(mention => {
-          let mentionDetails = getMentions.details(mention.key);
-          if (!reportOutput[mentionDetails.label]) {
-            reportOutput[mentionDetails.label] = 0;
+          if (!reportOutput[mention.details.label]) {
+            reportOutput[mention.details.label] = 0;
           }
 
           mentionsTracked = true;
-          reportOutput[mentionDetails.label] += timeSpent;
-          billableTotal += timeSpent;
+          reportOutput[mention.details.label] += entry.hoursSpent;
+          billableTotal += entry.hoursSpent;
         });
 
         // No mentions, let's track this as "non-billable"
         if (!mentionsTracked) {
-          nonBillableTotal += timeSpent;
+          nonBillableTotal += entry.hoursSpent;
         }
       });
     }

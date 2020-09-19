@@ -14,7 +14,7 @@ module.exports = {
 
     return mentions;
   },
-  getDetails: (key) => {
+  details: (key) => {
     if (!mentions) {
       throw "Must run mentions.prep() before calling for Details. No results found.";
     }

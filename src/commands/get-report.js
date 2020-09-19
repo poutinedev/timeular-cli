@@ -1,6 +1,6 @@
 const date = require("../data/get-date");
-const mentions = require("../data/get-timeular-mentions");
-const timeular = require("../timeular"); // @TODO change this to just 'timeular'
+const getMentions = require("../data/get-timeular-mentions");
+const getEntries = require("../data/get-timeular-entries");
 
 const getDateRangeForDisplay = start => {
   // @todo support date ranges larger than one day
@@ -20,14 +20,10 @@ module.exports = async startDate => {
     let nonBillableTotal = 0;
 
     // Get all 'mentions' available.
-    await mentions.prep();
+    await getMentions.prep();
 
     // Get all of the time entries that fit this range.
-    const entries = await timeular.api(
-      `time-entries/${timeStart.format(
-        "YYYY-MM-DDTHH:mm:ss.SSS"
-      )}/${timeEnd.format("YYYY-MM-DDTHH:mm:ss.SSS")}`
-    );
+    const entries = await getEntries( timeStart, timeEnd );
 
     // For all entries, let's get the mentions, and track the time spent for each, billable and non-billable
     if (entries) {
@@ -35,7 +31,7 @@ module.exports = async startDate => {
         let mentionsTracked = false;
         const timeSpent = date.getDuration(entry.duration);
         entry.note.mentions.forEach(mention => {
-          let mentionDetails = mentions.getDetails(mention.key, mentions);
+          let mentionDetails = getMentions.details(mention.key);
           if (!reportOutput[mentionDetails.label]) {
             reportOutput[mentionDetails.label] = 0;
           }

@@ -4,7 +4,7 @@ const program = require("commander");
 const getReport = require("../src/commands/get-report");
 const sendToJira = require("../src/commands/send-to-jira");
 
-program.version("0.1.1", "-v, --version");
+program.version("0.3.0", "-v, --version");
 
 program
   .command("report [startDate]")
@@ -15,7 +15,7 @@ program
   });
 
 program
-  .command("send [startDate]")
+  .command("jira [startDate]")
   .description("Send the time entries for the provided date (default: today)")
   .action(startDate => {
     sendToJira(startDate)

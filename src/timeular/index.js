@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 const apiKey = process.env.TIMEULAR_API_KEY;
 const apiSecret = process.env.TIMEULAR_API_SECRET;
 
-const apiPath = "https://api.timeular.com/api/v2/";
+const apiPath = "https://api.timeular.com/api/v3/";
 let apiToken;
 
 if (!apiKey || !apiSecret) {

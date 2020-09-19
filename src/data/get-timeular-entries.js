@@ -9,7 +9,7 @@ module.exports = async (timeStart, timeEnd) => {
   )}/${timeEnd.format("YYYY-MM-DDTHH:mm:ss.SSS")}`);
 
   if (entries) {
-    entries = entries.timeEntries.map(entry => {
+    return entries.timeEntries.map(entry => {
       entry.hoursSpent = date.getDuration(entry.duration);
       entry.note.mentions = entry.note.mentions.map(mention => {
         mention.details = getMentions.details(mention.key);
@@ -21,5 +21,5 @@ module.exports = async (timeStart, timeEnd) => {
     });
   }
 
-  return entries;
+  return false;
 };

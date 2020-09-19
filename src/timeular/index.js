@@ -21,9 +21,7 @@ const callTimeular = async (endpoint, data = {}) => {
   }
 
   if (apiToken) {
-    data.headers = {
-      Authorization: `Bearer ${apiToken}`
-    };
+    data.headers.Authorization = `Bearer ${apiToken}`;
   }
 
   const res = await fetch(url, data);

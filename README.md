@@ -1,6 +1,6 @@
 # Timeular CLI
 
-At my current workplace we use Jira, but unfortunately it's a version that is not compatible with the integration that [Timeular](https://timeular.com) offers. So, those of us who use Timeular needed a way to generate a report of how much time we spent on each task (flagged with Mentions, per Timeular's Jira integration standard). I built this so we can add the time to our timesheets at the end of the day more quickly.
+At my current workplace we use Jira, but it's a version that is not easily compatible with the integration that [Timeular](https://timeular.com) offers. So, those of us who use Timeular needed a way to generate a report of how much time we spent on each task (flagged with Mentions, per Timeular's Jira integration standard). I built this CLI so we can add the time to our timesheets at the end of the day more quickly.
 
 **This is a personal project, and updates to this will primarily be sporadic and as I need it. Pull Requests welcome.**
 
@@ -17,7 +17,7 @@ export TIMEULAR_API_KEY="XXXXXXXXXX"
 export TIMEULAR_API_SECRET="YYYYYYYYYY"
 ```
 
-You can get the values for these fields by visiting your [Account page](https://profile.timeular.com/#/app/account) on Timeular
+You can get the values for these fields by visiting your [Account page](https://app.timeular.com/#/settings/account) on Timeular
 
 #### via NPM
 
@@ -30,21 +30,6 @@ $ npm install -g @poutine/timeular-cli
 ```
 $ yarn global add @poutine/timeular-cli
 ```
-
-## Updating
-
-#### via NPM
-
-```
-$ npm update -g @poutine/timeular-cli
-```
-
-#### via Yarn
-
-```
-$ yarn global upgrade @poutine/timeular-cli@latest
-```
-
 ## How to Use
 
 ### Time Report
@@ -79,7 +64,7 @@ Total Hours  :  2.66
 
 ## Road Map
 
-- Set up the reporting so you can specify a date range rather than only be "today"
+- Set up the reporting so you can specify a date range rather than a single day
 - Get specific Activity or Mentions
 - Move console.log into its own library, with colors and fancy displays depending on status
 - Start and stop timers
@@ -87,4 +72,4 @@ Total Hours  :  2.66
 
 ## Contributors
 
-Chris Lagasse <soben@outlook.com>
+Chris Lagasse <chrislagasse@protonmail.com>

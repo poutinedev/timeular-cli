@@ -4,7 +4,7 @@ const cachePath = "../../cache/";
 
 modules.export = {
   get: async (key) => {
-    const fileName = cachePath + key + ".txt";
+    const fileName = cachePath + key + ".json";
 
     try {
       const storedContent = await fs.readFile(fileName, "utf8");
@@ -26,7 +26,7 @@ modules.export = {
       expiration.setMinutes(expiration.getMinutes() + 30);
     }
 
-    const fileName = cachePath + key + ".txt";
+    const fileName = cachePath + key + ".json";
 
     const content = {
       expiration,

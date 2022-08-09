@@ -22,9 +22,12 @@ describe("Get Report", function() {
         "timeStart",
         "timeEnd",
         "billableTotal",
+        "unknownTotal",
         "nonBillableTotal",
         "grandTotal"
       );
+
+    expect(result.grandTotal.toFixed(2)).to.equal("10.04");
 
     return true;
   });

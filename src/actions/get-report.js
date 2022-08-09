@@ -11,6 +11,7 @@ module.exports = async (startDate) => {
     const reportData = [];
     let grandTotal = 0;
     let billableTotal = 0;
+    let unknownTotal = 0;
     let nonBillableTotal = 0;
 
     // For all entries, let's get the mentions, and track the time spent for each, billable and non-billable
@@ -18,15 +19,21 @@ module.exports = async (startDate) => {
       entries.forEach((entry) => {
         let mentionsTracked = false;
         entry.note.mentions.forEach((mention) => {
-          if (mention.details) {
-            if (!reportData[mention.details.label]) {
-              reportData[mention.details.label] = 0;
-            }
+          mentionsTracked = true;
 
-            mentionsTracked = true;
-            reportData[mention.details.label] += entry.hoursSpent;
+          let label = "Missing Label";
+
+          if (mention.details) {
+            label = mention.details.label;
             billableTotal += entry.hoursSpent;
+          } else {
+            unknownTotal += entry.hoursSpent;
           }
+
+          if (!reportData[label]) {
+            reportData[label] = 0;
+          }
+          reportData[label] += entry.hoursSpent;
         });
 
         // No mentions, let's track this as "non-billable"
@@ -44,6 +51,7 @@ module.exports = async (startDate) => {
       timeStart,
       timeEnd,
       billableTotal,
+      unknownTotal,
       nonBillableTotal,
       grandTotal,
     };

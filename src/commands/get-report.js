@@ -41,8 +41,15 @@ module.exports = async (startDate) => {
       // @todo add 'Other' time to table instead of it's own 'total' entry?
 
       console.table(formattedData);
-      console.log("Non-Billable : ", data.nonBillableTotal.toFixed(2));
-      console.log("Billable     : ", data.billableTotal.toFixed(2));
+      if (data.nonBillableTotal > 0) {
+        console.log("Non-Billable : ", data.nonBillableTotal.toFixed(2));
+      }
+      if (data.billableTotal > 0) {
+        console.log("Billable     : ", data.billableTotal.toFixed(2));
+      }
+      if (data.unknownTotal > 0) {
+        console.log("Unknown      : ", data.unknownTotal.toFixed(2));
+      }
       console.log("Total Hours  : ", data.grandTotal.toFixed(2));
 
       return true;

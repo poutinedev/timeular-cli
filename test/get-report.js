@@ -1,5 +1,5 @@
 const expect = require("chai").expect;
-var getReport = require("../src/get-report");
+var getReport = require("../src/actions/get-report");
 
 describe("Get Report", function() {
   it("should fail on invalid date", async function() {
@@ -16,7 +16,7 @@ describe("Get Report", function() {
     expect(result)
       .to.be.an("object")
       .that.has.all.keys(
-        "reportOutput",
+        "reportData",
         "timeStart",
         "timeEnd",
         "billableTotal",

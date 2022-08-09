@@ -2,6 +2,8 @@ const expect = require("chai").expect;
 var getReport = require("../src/actions/get-report");
 
 describe("Get Report", function() {
+  this.timeout(8000);
+
   it("should fail on invalid date", async function() {
     const result = await getReport("something");
 

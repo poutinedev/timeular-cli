@@ -1,21 +1,15 @@
 #!/usr/bin/env node
 
 const program = require("commander");
-const getReport = require("../src/commands/get-report");
+const getReport = require("../src/get-report");
 
-program.version("0.1.1", "-v, --version");
+program.version("1.0.0", "-v, --version");
 
 program
-  .command("report [startDate]")
+  .command("[date]")
   .description("Get a full report for the day")
-  // .option("-b --by", "Filter by 'activities' or 'mentions' (default: mentions)")
-  .action(startDate => {
-    getReport(startDate);
+  .action((date) => {
+    getReport(date);
   });
-
-// program
-//   .command("*")
-//   .description("Get total time spent for Timeular mention (Jira Issue)")
-//   .action(getReport);
 
 program.parse(process.argv);

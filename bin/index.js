@@ -14,8 +14,8 @@ program
   });
 
 program
-  .command("clear")
-  .description("Force the cache to clear")
+  .command("flush")
+  .description("Flush the cache")
   .action(() => {
     clearCacheCommand();
   });

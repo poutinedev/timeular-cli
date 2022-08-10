@@ -9,6 +9,7 @@ module.exports = async () => {
     }
 
     console.log("Cache cleared successfully");
+    return true;
   } catch (err) {
     console.error(err);
     return false;

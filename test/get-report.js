@@ -1,4 +1,5 @@
 const expect = require("chai").expect;
+
 var getReport = require("../src/actions/get-report");
 
 describe("Get Report", function() {

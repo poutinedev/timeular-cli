@@ -1,7 +1,7 @@
 {
   "name": "@poutine/timeular-cli",
   "author": "Chris Lagasse <chrislagasse@protonmail.com>",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Manage your Timeular reporting and time tracking",
   "repository": {
     "type": "git",

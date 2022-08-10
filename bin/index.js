@@ -4,7 +4,7 @@ const program = require("commander");
 const getReportCommand = require("../src/commands/get-report");
 const clearCacheCommand = require("../src/commands/clear-cache");
 
-program.version("1.0.0", "-v, --version");
+program.version("0.4.1", "-v, --version");
 
 program
   .command("report [date]")

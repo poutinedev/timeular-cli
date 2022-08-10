@@ -1,6 +1,6 @@
 const expect = require("chai").expect;
 
-var getReport = require("../src/actions/get-report");
+const getReport = require("../src/actions/get-report");
 
 describe("Get Report", function() {
   this.timeout(8000);

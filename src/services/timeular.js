@@ -1,13 +1,12 @@
 const fetch = require("node-fetch");
 
+const cacheService = require("./cache");
+
 const apiKey = process.env.TIMEULAR_API_KEY;
 const apiSecret = process.env.TIMEULAR_API_SECRET;
 
 const apiPath = "https://api.timeular.com/api/v3/";
 let apiToken;
-
-// @TODO put this in a cache instead.
-let tagsAndMentions = null;
 
 if (!apiKey || !apiSecret) {
   throw "Missing API Key and Secret. Please provide with environment variables TIMEULAR_API_KEY and TIMEULAR_API_SECRET";
@@ -70,17 +69,22 @@ const getTimeEntries = async (start, end) => {
 };
 
 const getTagsAndMentions = async () => {
+  let tagsAndMentions = await cacheService.get("tags-and-mentions");
   if (!tagsAndMentions) {
     tagsAndMentions = await call("tags-and-mentions");
+
+    const expiration = new Date();
+    expiration.setHours(expiration.getHours() + 2); // Cache for 2 hours
+    cacheService.set("tags-and-mentions", tagsAndMentions, expiration);
   }
 
   return tagsAndMentions;
 };
 
 const getMentions = async () => {
-  await getTagsAndMentions();
+  const data = await getTagsAndMentions();
 
-  return tagsAndMentions.mentions;
+  return data.mentions;
 };
 const getMention = async (key) => {
   const mentions = await getMentions();
@@ -93,9 +97,9 @@ const getMention = async (key) => {
   return null;
 };
 const getTags = async () => {
-  await getTagsAndMentions();
+  const data = await getTagsAndMentions();
 
-  return tagsAndMentions.tags;
+  return data.tags;
 };
 const getTag = async (key) => {
   const tags = await getTags();

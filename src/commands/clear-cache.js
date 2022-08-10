@@ -1,3 +1,16 @@
+const cacheService = require("../services/cache");
+
 module.exports = async () => {
-  console.log("Cache clear not implemented yet.");
+  try {
+    const result = await cacheService.clearAll();
+
+    if (!result) {
+      throw "Could not clear cache";
+    }
+
+    console.log("Cache cleared successfully");
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };

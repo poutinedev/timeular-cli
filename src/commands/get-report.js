@@ -55,7 +55,7 @@ module.exports = async (startDate) => {
       return true;
     }
 
-    console.error("There was an error.");
+    throw "There was an unknown error";
   } catch (error) {
     console.error(error);
   }

@@ -33,11 +33,9 @@ module.exports = {
   },
   set: async function(key, data, expiration = null) {
     if (!expiration) {
-                       expiration = new Date();
-                       expiration.setMinutes(
-                         expiration.getMinutes() + 30
-                       );
-                     }
+      expiration = new Date();
+      expiration.setMinutes(expiration.getMinutes() + 30);
+    }
     const fileName = cachePath + key + ".json";
     const content = {
       expiration,

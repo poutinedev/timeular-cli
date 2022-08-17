@@ -13,6 +13,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
   },
-  rules: { "prettier/prettier": "error" },
+  rules: { "no-console": "on", "prettier/prettier": "error" },
   plugins: ["mocha", "prettier"],
 };

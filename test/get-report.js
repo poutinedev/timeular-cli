@@ -8,27 +8,11 @@ const getReportAction = require("../src/actions/get-report");
 const timeularService = require("../src/services/timeular");
 
 describe("Get Report", function() {
-  let timeularMentions, timeularEntries;
+  let timeularMentions, timeularTags, timeularEntries;
   beforeEach(function() {
-    timeularMentions = sinon
-      .stub(timeularService, "getMentions")
-      .callsFake(() => {
-        const fileName = dataPath + "get-report.mentions.json";
-        const fileContent = fs.readFileSync(fileName, "utf8");
-        const parsedContent = JSON.parse(fileContent);
+    timeularMentions = sinon.stub(timeularService, "getMentions");
 
-        return parsedContent.data.mentions;
-      });
-
-    timeularEntries = sinon
-      .stub(timeularService, "getTimeEntries")
-      .callsFake(function() {
-        const fileName = dataPath + "get-report.time-entries.json";
-        const fileContent = fs.readFileSync(fileName, "utf8");
-        const parsedContent = JSON.parse(fileContent);
-
-        return parsedContent.data;
-      });
+    timeularEntries = sinon.stub(timeularService, "getTimeEntries");
   });
 
   afterEach(function() {
@@ -51,6 +35,22 @@ describe("Get Report", function() {
   });
 
   it("should succeed with a valid formatted date", async function() {
+    timeularMentions.callsFake(() => {
+      const fileName = dataPath + "get-report.mentions.json";
+      const fileContent = fs.readFileSync(fileName, "utf8");
+      const parsedContent = JSON.parse(fileContent);
+
+      return parsedContent.data.mentions;
+    });
+
+    timeularEntries.callsFake(function() {
+      const fileName = dataPath + "get-report.time-entries.json";
+      const fileContent = fs.readFileSync(fileName, "utf8");
+      const parsedContent = JSON.parse(fileContent);
+
+      return parsedContent.data;
+    });
+
     const result = await getReportAction("2022-08-05");
 
     expect(result)

@@ -17,7 +17,9 @@ describe("Get Report", function() {
       .callsFake(() => {
         const fileName = dataPath + "get-report.mentions.json";
         const fileContent = fs.readFileSync(fileName, "utf8");
-        return JSON.parse(fileContent);
+        const parsedContent = JSON.parse(fileContent);
+
+        return parsedContent.data.mentions;
       });
 
     timeularEntries = sinon
@@ -25,7 +27,9 @@ describe("Get Report", function() {
       .callsFake(function() {
         const fileName = dataPath + "get-report.time-entries.json";
         const fileContent = fs.readFileSync(fileName, "utf8");
-        return JSON.parse(fileContent);
+        const parsedContent = JSON.parse(fileContent);
+
+        return parsedContent.data;
       });
   });
 

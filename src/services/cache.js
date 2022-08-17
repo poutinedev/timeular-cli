@@ -28,7 +28,6 @@ module.exports = {
 
       return content.data;
     } catch (err) {
-      console.log(err);
       return false;
     }
   },
@@ -49,7 +48,6 @@ module.exports = {
       await fs.writeFileSync(fileName, jsonData);
       return content;
     } catch (err) {
-      console.log(err);
       return false;
     }
   },
@@ -64,7 +62,6 @@ module.exports = {
 
       return true;
     } catch (err) {
-      console.log(err);
       return false;
     }
   },
@@ -85,7 +82,6 @@ module.exports = {
 
       return true;
     } catch (err) {
-      console.log(err);
       return false;
     }
   },

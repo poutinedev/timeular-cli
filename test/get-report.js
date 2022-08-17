@@ -37,7 +37,13 @@ describe("Get Report", function() {
   });
 
   it("should fail on invalid date", async function() {
-    const result = await getReportAction("something");
+    let result;
+    try {
+      result = await getReportAction("something");
+    } catch (err) {
+      // @TODO Do anything with this error? "Date must be YYYY-MM-DD format"
+      result = false;
+    }
 
     expect(result).to.equal(false);
 

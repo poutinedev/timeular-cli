@@ -8,8 +8,6 @@ const getReportAction = require("../src/actions/get-report");
 const timeularService = require("../src/services/timeular");
 
 describe("Get Report", function() {
-  this.timeout(8000);
-
   let timeularMentions, timeularEntries;
   beforeEach(function() {
     timeularMentions = sinon

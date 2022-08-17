@@ -5,7 +5,7 @@ module.exports = {
     es6: true,
     mocha: true,
   },
-  extends: ["eslint:recommended", "plugin:prettier/recommended"],
+  extends: ["eslint:recommended"],
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
@@ -13,6 +13,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
   },
-  rules: { "no-console": "off", "prettier/prettier": "error" },
+  rules: { "prettier/prettier": "error" },
   plugins: ["mocha", "prettier"],
 };

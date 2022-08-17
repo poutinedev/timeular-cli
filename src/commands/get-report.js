@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const getReportAction = require("../actions/get-report");
 
 const getDateRangeForDisplay = (start) => {

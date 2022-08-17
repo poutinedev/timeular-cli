@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 const cacheService = require("../services/cache");
 
 module.exports = async () => {

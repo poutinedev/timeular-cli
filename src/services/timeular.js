@@ -61,15 +61,18 @@ const call = async (endpoint, data = {}) => {
 };
 
 const getTimeEntries = async (start, end) => {
-  return call(
+  let entries = await call(
     `time-entries/${start.format("YYYY-MM-DDTHH:mm:ss.SSS")}/${end.format(
       "YYYY-MM-DDTHH:mm:ss.SSS"
     )}`
   );
+
+  return entries;
 };
 
 const getTagsAndMentions = async () => {
   let tagsAndMentions = await cacheService.get("tags-and-mentions");
+
   if (!tagsAndMentions) {
     tagsAndMentions = await call("tags-and-mentions");
 

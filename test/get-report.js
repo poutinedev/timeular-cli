@@ -1,12 +1,41 @@
 const expect = require("chai").expect;
+const sinon = require("sinon");
+const fs = require("fs");
 
-const getReport = require("../src/actions/get-report");
+const dataPath = __dirname + "/data/";
+
+const getReportAction = require("../src/actions/get-report");
+const timeularService = require("../src/services/timeular");
 
 describe("Get Report", function() {
   this.timeout(8000);
 
+  let timeularMentions, timeularEntries;
+  beforeEach(function() {
+    timeularMentions = sinon
+      .stub(timeularService, "getMentions")
+      .callsFake(() => {
+        const fileName = dataPath + "get-report.mentions.json";
+        const fileContent = fs.readFileSync(fileName, "utf8");
+        return JSON.parse(fileContent);
+      });
+
+    timeularEntries = sinon
+      .stub(timeularService, "getTimeEntries")
+      .callsFake(function() {
+        const fileName = dataPath + "get-report.time-entries.json";
+        const fileContent = fs.readFileSync(fileName, "utf8");
+        return JSON.parse(fileContent);
+      });
+  });
+
+  afterEach(function() {
+    timeularMentions.restore();
+    timeularEntries.restore();
+  });
+
   it("should fail on invalid date", async function() {
-    const result = await getReport("something");
+    const result = await getReportAction("something");
 
     expect(result).to.equal(false);
 
@@ -14,7 +43,7 @@ describe("Get Report", function() {
   });
 
   it("should succeed with a valid formatted date", async function() {
-    const result = await getReport("2022-08-05");
+    const result = await getReportAction("2022-08-05");
 
     expect(result)
       .to.be.an("object")
@@ -29,7 +58,6 @@ describe("Get Report", function() {
       );
 
     expect(result.grandTotal.toFixed(2)).to.equal("10.04");
-
     return true;
   });
 });

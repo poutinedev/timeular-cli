@@ -2,6 +2,9 @@
 .vscode
 yarn-error.log
 
+# Old Version
+src-old
+
 # Cache Files
 /cache
 !cache/.gitkeep

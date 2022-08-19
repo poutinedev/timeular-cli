@@ -44,7 +44,7 @@ describe("Get Report", function() {
     });
 
     timeularEntries.callsFake(function() {
-      const fileName = dataPath + "get-report.time-entries.json";
+      const fileName = dataPath + "get-report.entries.json";
       const fileContent = fs.readFileSync(fileName, "utf8");
       const parsedContent = JSON.parse(fileContent);
 

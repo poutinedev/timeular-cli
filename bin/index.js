@@ -3,6 +3,7 @@
 const program = require("commander");
 const getReportCommand = require("../src/commands/get-report");
 const clearCacheCommand = require("../src/commands/clear-cache");
+const jiraTimeEntryCommand = require("../src/commands/jira-time-entry");
 
 program.version(require("../package.json").version);
 
@@ -18,6 +19,13 @@ program
   .description("Flush the cache")
   .action(() => {
     clearCacheCommand();
+  });
+
+program
+  .command("log [date]")
+  .description("Log billable time entries to Jira")
+  .action((date) => {
+    jiraTimeEntryCommand(date);
   });
 
 program.parse(process.argv);

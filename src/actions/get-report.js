@@ -7,7 +7,7 @@ module.exports = async (startDate) => {
   // Get all of the time entries that fit this range.
   const entries = await entriesModal.getEntries(timeStart, timeEnd);
 
-  const reportData = [];
+  let reportData = [];
   let grandTotal = 0;
   let billableTotal = 0;
   let unknownTotal = 0;
@@ -41,6 +41,13 @@ module.exports = async (startDate) => {
       }
     });
   }
+
+  reportData = Object.keys(reportData)
+    .sort()
+    .reduce((obj, key) => {
+      obj[key] = reportData[key];
+      return obj;
+    }, {});
 
   // Calculate the grand total.
   grandTotal += billableTotal + nonBillableTotal;

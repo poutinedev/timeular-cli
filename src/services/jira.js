@@ -1,14 +1,16 @@
 const jiraAPI = require("jira-client");
+const cache = require("./cache");
+const cacheService = require("./cache");
 
 const jiraHost = process.env.JIRA_HOST || "";
 const jiraUsername = process.env.JIRA_USERNAME;
 const jiraPassword = process.env.JIRA_PASSWORD;
 
-if (!jiraHost || !jiraUsername || !jiraPassword) {
-  throw "Missing Jira Credentials. Please provide with environment variables JIRA_HOST, JIRA_USERNAME, and JIRA_PASSWORD";
-}
+const getClient = function () {
+  if (!jiraHost || !jiraUsername || !jiraPassword) {
+    throw "Missing Jira Credentials. Please provide with environment variables JIRA_HOST, JIRA_USERNAME, and JIRA_PASSWORD";
+  }
 
-const getClient = async function () {
   return new jiraAPI({
     protocol: "https",
     host: jiraHost,
@@ -20,7 +22,18 @@ const getClient = async function () {
 };
 
 const getTask = async function (id) {
-  const client = getClient();
+  try {
+    const client = getClient();
+    const issue = await client.findIssue(id);
+    cache.set(id, issue);
+
+    return issue;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
 };
 
-module.exports = {};
+module.exports = {
+  getTask
+};

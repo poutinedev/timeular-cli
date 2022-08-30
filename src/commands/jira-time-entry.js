@@ -13,6 +13,7 @@ module.exports = async (startDate) => {
 
     taskIDs.forEach((taskID) => {
       // Is taskID a valid Task?
+      const jiraTask = jiraService.getTask(taskID);
       // if not, throw warning, and continue.
       // if it is, let's ask for a description.
       // attempt to submit.
